@@ -1,10 +1,10 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Put, Query } from '@nestjs/common';
 import { firestore, sendNotification } from '../util/firebase';
 import { platforms } from 'src/util/constants';
 
 @Controller('friend-request')
 export class FriendRequestController {
-  @Get('send')
+  @Put('send')
   async sendFriendRequest(
     @Query('from') from: string,
     @Query('to') to: string,
