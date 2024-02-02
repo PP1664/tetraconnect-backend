@@ -54,49 +54,4 @@ export class FriendRequestController {
     });
   }
 
-  @Post('/remove')
-  async removeFriend(
-    @Query('user') userID: string,
-    @Query('removed') removedID: string,
-  ) {
-    const user = await firestore.doc(`users/${userID}`).get();
-    const removed = await firestore.doc(`users/${removedID}`).get();
-
-    if (!user.exists) return 'User does not exist';
-    if (!removed.exists) return 'Removed friend does not exist';
-
-    const friends = await firestore
-      .collection('friends')
-      .where('users', 'in', [[user.ref, removed.ref], [removed.ref, user.ref]])
-      .get();
-
-    if (friends.docs.length === 0) {
-      return 'Removed user not in friend list';
-    }
-
-    await friends.docs[0].ref.delete();
-
-    let tokens = [];
-
-    for (const platform in platforms) {
-      tokens = tokens.concat(removed.data[`${platform}_tokens`]);
-    }
-
-    try {
-      await sendNotification({
-        tokens: tokens,
-        image: user.data()['photoUrl'],
-        title: `${user.data()['displayName']} has removed you as a friend`,
-        body: 'Click this notification to open the app',
-        data: {
-          click_action: 'FLUTTER_NOTIFICATION_CLICK',
-          type: 'removeFriend',
-          userDisplayName: user.data()['displayName'],
-          userPhotoUrl: user.data()['photoUrl'],
-        },
-      });
-    } finally {
-      return 'Friend removed';
-    }
   }
-}
