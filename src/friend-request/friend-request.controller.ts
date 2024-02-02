@@ -67,7 +67,7 @@ export class FriendRequestController {
 
     const friends = await firestore
       .collection('friends')
-      .where('users', 'in', [[user.ref, removed.ref], [user.ref, removed.ref]])
+      .where('users', 'in', [[user.ref, removed.ref], [removed.ref, user.ref]])
       .get();
 
     if (friends.docs.length === 0) {
