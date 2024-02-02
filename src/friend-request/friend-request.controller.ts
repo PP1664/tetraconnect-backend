@@ -54,7 +54,7 @@ export class FriendRequestController {
     });
   }
 
-  @Post()
+  @Post('/remove')
   async removeFriend(
     @Query('user') userID: string,
     @Query('removed') removedID: string,
