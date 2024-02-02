@@ -54,7 +54,7 @@ export class FriendController {
   async message(
     @Query('user') userID: string,
     @Query('text') text: string,
-    @Query('friendID') friendID: string,
+    @Query('friend') friendID: string,
   ) {
     const user = await firestore.doc(`users/${userID}`).get();
 
