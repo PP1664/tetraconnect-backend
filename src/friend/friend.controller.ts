@@ -79,6 +79,7 @@ export class FriendController {
     await friend.ref.collection('messages').add({
       text: text,
       time: FirebaseFirestore.FieldValue.serverTimestamp(),
+      user: user.ref,
     });
 
     const otherUser = await friend.data()['users'].filter((e) => e.id !== user.id)[0].get();
