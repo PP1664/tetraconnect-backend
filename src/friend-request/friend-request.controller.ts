@@ -68,10 +68,9 @@ export class FriendRequestController {
     const friends = await firestore
       .collection('friends')
       .where('users', 'array-contains', user.ref)
-      .where('users', 'array-contains', removed.ref)
       .get();
 
-    if (friends.docs.length === 0) {
+    if (friends.docs.filter((doc) => doc.data()['users'].includes(removed.ref)).length === 0) {
       return 'Removed user not in friend list';
     }
 
