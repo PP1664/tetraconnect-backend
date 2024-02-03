@@ -1,6 +1,7 @@
 import { Controller, Post, Query } from '@nestjs/common';
 import { firestore, sendNotification } from '../util/firebase';
 import { platforms } from 'src/util/constants';
+import * as admin from 'firebase-admin';
 
 @Controller('friend')
 export class FriendController {
@@ -78,7 +79,7 @@ export class FriendController {
 
     await friend.ref.collection('messages').add({
       text: text,
-      time: FirebaseFirestore.FieldValue.serverTimestamp(),
+      time: admin.firestore.FieldValue.serverTimestamp(),
       user: user.ref,
     });
 
