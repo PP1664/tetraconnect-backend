@@ -68,7 +68,7 @@ export class FriendController {
       return 'Friend group does not exist';
     }
 
-    if (!friend.data()['users'].includes(user.ref)) {
+    if (!friend.data()['users'].map((e) => e.id).includes(userID)) {
       return 'User not in friend group';
     }
 
